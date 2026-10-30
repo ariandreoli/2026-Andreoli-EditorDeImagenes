@@ -221,10 +221,10 @@ def enviar_correo(remitente, clave, destinatario, imagen, asunto, texto_mensaje)
 
     datos, comprimida = imagen_para_adjunto(imagen)
     mensaje = EmailMessage()
-    mensaje["Subject"] = asunto.strip() or "Imagen enviada desde Lúmina Studio"
+    mensaje["Subject"] = asunto.strip() or "Imagen enviada desde Chio Studio"
     mensaje["From"] = remitente
     mensaje["To"] = destinatario
-    mensaje.set_content(texto_mensaje.strip() or "Hola. Te envío una imagen editada con Lúmina Studio.")
+    mensaje.set_content(texto_mensaje.strip() or "Hola. Te envío una imagen editada con Chio Studio.")
     mensaje.add_attachment(
         datos, maintype="image", subtype="jpeg", filename="lumina_imagen.jpg"
     )
@@ -246,7 +246,7 @@ def enviar_correo(remitente, clave, destinatario, imagen, asunto, texto_mensaje)
 class LuminaStudio(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Lúmina Studio — Editor de imágenes")
+        self.title("Chio Studio — Editor de imágenes")
         self.geometry("1180x760")
         self.minsize(900, 620)
         self.configure(bg=FONDO)
@@ -330,9 +330,9 @@ class LuminaStudio(tk.Tk):
         barra.add_cascade(label="Filtros", menu=filtros)
 
         ayuda = tk.Menu(barra, tearoff=False)
-        ayuda.add_command(label="Acerca de Lúmina Studio",
+        ayuda.add_command(label="Acerca de Chio Studio",
                           command=lambda: messagebox.showinfo(
-                              "Lúmina Studio",
+                              "Chio Studio",
                               "Editor de imágenes desarrollado en Python, Tkinter y Pillow.\nProyecto educativo de Programación II."
                           ))
         ayuda.add_command(label="Consejos de uso",
@@ -351,7 +351,7 @@ class LuminaStudio(tk.Tk):
     def _crear_interfaz(self):
         cabecera = tk.Frame(self, bg=FONDO, padx=22, pady=15)
         cabecera.pack(fill="x")
-        tk.Label(cabecera, text="◈  LÚMINA STUDIO", bg=FONDO, fg=TEXTO,
+        tk.Label(cabecera, text="◈  CHIO STUDIO", bg=FONDO, fg=TEXTO,
                  font=("Segoe UI", 18, "bold")).pack(side="left")
         tk.Label(cabecera, text="EDITOR CREATIVO", bg=FONDO, fg="#A78BFA",
                  font=("Segoe UI", 9, "bold")).pack(side="left", padx=15, pady=(5, 0))
@@ -550,7 +550,7 @@ class LuminaStudio(tk.Tk):
             self.canvas.create_text(
                 max(100, self.canvas.winfo_width() // 2),
                 max(80, self.canvas.winfo_height() // 2),
-                text="LÚMINA STUDIO\n\nAbrí una imagen para empezar a editar",
+                text="CHIO STUDIO\n\nAbrí una imagen para empezar a editar",
                 fill="#777D94", font=("Segoe UI", 16), justify="center"
             )
             if hasattr(self, "dimensiones"):
@@ -938,7 +938,7 @@ class LuminaStudio(tk.Tk):
         if not self._necesita_imagen():
             return
         ventana = tk.Toplevel(self)
-        ventana.title("Filtros de Lúmina")
+        ventana.title("Filtros de Chio Studio")
         ventana.configure(bg=FONDO)
         tk.Label(ventana, text="Elegí un filtro para comparar antes de aplicarlo",
                  bg=FONDO, fg=TEXTO, font=("Segoe UI", 11, "bold")).pack(padx=20, pady=14)
