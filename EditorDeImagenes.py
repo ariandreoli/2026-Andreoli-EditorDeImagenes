@@ -11,8 +11,10 @@ ENVÍO POR CORREO (Gmail):
 La contraseña de aplicación va enmascarada dentro de este mismo archivo
 (constante CLAVE_APP_MASCARA). El programa no la pide al usuario.
 """
-
+            
+import winsound            
 import os
+import sys
 import re
 import io
 import ssl
@@ -51,6 +53,19 @@ LIENZO = "#0C0E15"
 # No es cifrado: solo evita que se lea a simple vista en el código.
 CLAVE_APP_MASCARA = "eGl4aGJienhkaWJoc3BnaQ=="
 
+# -------------------------- RECURSOS Y RUTAS ----------------------------
+def ruta_recurso(nombre_archivo):
+    """Obtiene la ruta correcta del archivo tanto en .py como dentro de un .exe"""
+    # 1. Si está empaquetado dentro de un .exe de PyInstaller
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, nombre_archivo)
+    
+    # 2. Si el archivo está al lado del .exe
+    if getattr(sys, 'frozen', False):
+        return os.path.join(os.path.dirname(sys.executable), nombre_archivo)
+    
+    # 3. Si se ejecuta como script normal en Thonny (.py)
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), nombre_archivo)
 
 # -------------------------- OPERACIONES DE IMAGEN -----------------------
 def preparar(imagen):
@@ -564,11 +579,25 @@ class LuminaStudio(tk.Tk):
             self.dimensiones.config(text=f"{self.imagen.width} × {self.imagen.height} px")
 
     def _sonido(self):
-        # Sonido sencillo del sistema, sin archivos adicionales.
+        """Reproduce wow.wav (o wow.mp3) de forma asíncrona sin trabar la interfaz."""
         try:
-            self.bell()
-        except tk.TclError:
-            pass
+            ruta_wav = ruta_recurso("WowAnime.wav")
+            ruta_mp3 = ruta_recurso("WowAnime.mp3")
+
+            if os.path.exists(ruta_wav):
+                winsound.PlaySound(ruta_wav, winsound.SND_FILENAME | winsound.SND_ASYNC)
+            elif os.path.exists(ruta_mp3):
+                alias = "sonido_lumina"
+                ctypes.windll.winmm.mciSendStringW(f'close {alias}', None, 0, None)
+                ctypes.windll.winmm.mciSendStringW(f'open "{ruta_mp3}" type mpegvideo alias {alias}', None, 0, None)
+                ctypes.windll.winmm.mciSendStringW(f'play {alias} from 0', None, 0, None)
+            else:
+                self.bell()
+        except Exception:
+            try:
+                self.bell()
+            except tk.TclError:
+                pass
 
     def deshacer(self):
         if not self._necesita_imagen():
