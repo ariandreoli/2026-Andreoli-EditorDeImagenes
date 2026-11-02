@@ -1012,7 +1012,7 @@ class LuminaStudio(tk.Tk):
 
         mensaje = tk.Text(ventana, height=5, width=45, font=("Arial", 10), wrap="word")
         mensaje.pack(fill="both", expand=True, padx=8, pady=4)
-        mensaje.insert("1.0", "Hola. Te envío una imagen editada con Lúmina Studio.")
+        mensaje.insert("1.0", "Hola. Te envío una imagen editada con Chio Studio.")
 
         def enviar_email():
             opcion = email_seleccionado.get()
